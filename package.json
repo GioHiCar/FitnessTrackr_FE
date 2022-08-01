@@ -9,10 +9,6 @@
     "start": "react-scripts start",
     "build": "NODE_ENV=production react-scripts build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GioHiCar/FitnessTrackr_FE.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -36,10 +32,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "bugs": {
-    "url": "https://github.com/GioHiCar/FitnessTrackr_FE/issues"
-  },
-  "homepage": "https://github.com/GioHiCar/FitnessTrackr_FE#readme"
-  
+  }
 }
