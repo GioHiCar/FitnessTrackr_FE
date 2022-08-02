@@ -1,19 +1,20 @@
 import React, { useState} from "react";
 import { userLogin } from "../api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import handleLogout from "./LogOut";
-// import './styles.css'
+
+
 
 const Home = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate()
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
       const token = await userLogin(username, password);
       localStorage.setItem("token", token);
-      console.log(token);
+      navigate("/routines");
     } catch (error) {
       console.log(error);
     }
@@ -24,10 +25,11 @@ const Home = () => {
         <div>
           Welcome!
           <Link to="/home/posts">View Posts</Link>
-          <button onClick={handleLogout}>Log Out</button>
+          <button onClick={handleLogout} >Log Out</button>
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
+        <h3>Log in</h3>
           <label htmlFor="username">Username: </label>
           <input
             type="text"
