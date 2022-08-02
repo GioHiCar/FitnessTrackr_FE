@@ -13,7 +13,7 @@ return(
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/routines" element={<Routines />} />
-      <Route path="myRoutines" element={<MyRoutines />} />
+      <Route path="/users/:username/routines" element={<MyRoutines />} />
       <Route path="/register" element={<Register token={token} setToken={setToken} />}/>
     </Routes>
 </div>

@@ -13,7 +13,7 @@ const Navbar = () => {
         <NavLink to="/routines" className="routines-link">
           Routines
         </NavLink>
-        <NavLink to="/myRoutines" className="myRoutines-link">
+        <NavLink to="/users/:username/routines" className="myRoutines-link">
           My Routines
         </NavLink>
         <NavLink to="/activities" className="activities-link">
