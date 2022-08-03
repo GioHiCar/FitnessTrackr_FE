@@ -9,22 +9,26 @@ const Home = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
+
   const handleSubmit = async (event) => {
     try {
+      if(username || password !== '' , password.length > 7 ) {
       event.preventDefault();
       const token = await userLogin(username, password);
       localStorage.setItem("token", token);
       navigate("/routines");
+       }else {
+        alert("Please enter a Username or Password!")
+       }
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <>
       {localStorage.getItem("token") ? (
         <div>
-          Welcome!
-          <Link to="/home/posts">View Posts</Link>
           <button onClick={handleLogout} >Log Out</button>
         </div>
       ) : (
@@ -48,7 +52,7 @@ const Home = () => {
           </div>
           <button type="submit">Login</button>
           <div>
-            <Link to="/register">Create Account</Link>
+            <Link to="/register">Don't have an account yet? Click here to create one!</Link>
           </div>
         </form>
       )}

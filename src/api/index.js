@@ -17,7 +17,6 @@ export const userLogin = async (username, password) => {
       });
       const result = await response.json();
       const token = result.token;
-      console.log(token, "THIS IS YOUR TOKEN");
       return token;
     } catch (error) {
       console.log(error);
@@ -59,20 +58,36 @@ export const userLogin = async (username, password) => {
      },
    })
      const result = await response.json();
-     console.log(result, "THIS IS A RESULT!!!!!!!!!!!!")
      return result;
   }
 
   export const getUserRoutines = async (token, username) => {
-    console.log(username,'this is username')
-    const response = await fetch(`${BASE_URL}/users/${username}/routines`, { headers: {
+    const response = await fetch(`${BASE_URL}/users/${username}/routines`, 
+    { headers: {
       'Content-Type' : 'application/json',
       'Authorization' : `Bearer ${token}`,
     },
   })
   const result = await response.json()
-  console.log(result, 'this is the rsult') 
   return result
-  }
+}
 
- 
+
+
+export const addRoutine = async (name, goal,token, isPublic) => {
+  console.log(isPublic)
+  const response = await fetch(`${BASE_URL}/routines`,{
+    method: 'POST',
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name:name,
+      goal: goal,
+      isPublic:isPublic
+    })
+  })
+  const result = await response.json()
+   return result
+}
