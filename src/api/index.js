@@ -111,7 +111,21 @@ export const addActivity = async (name, description,token) => {
    return result
 }
 
-
+export const patchRoutines = async (name, goal, isPublic, token) => {
+  const response = await fetch(`${BASE_URL}/routines/:routineId`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    },
+  body: JSON.stringify({
+    name: name,
+    goal: goal,
+  })
+})
+  const result = await response.json()
+  return result
+}
 
 
 
