@@ -37,9 +37,7 @@ export const userLogin = async (username, password) => {
       }),
     });
     const result = await response.json();
-    console.log(result)
     const token = result.token;
-    console.log(token, "THIS IS YOUR TOKEN");
     return token;
   };
 
@@ -75,7 +73,6 @@ export const userLogin = async (username, password) => {
 
 
 export const addRoutine = async (name, goal,token, isPublic) => {
-  console.log(isPublic)
   const response = await fetch(`${BASE_URL}/routines`,{
     method: 'POST',
     headers: {
@@ -91,3 +88,30 @@ export const addRoutine = async (name, goal,token, isPublic) => {
   const result = await response.json()
    return result
 }
+
+export const getAllActivities = async () => {
+ const response = await fetch(`${BASE_URL}/activities`)
+ const result = await response.json();
+ return result;
+}
+
+export const addActivity = async (name, description,token) => {
+  const response = await fetch(`${BASE_URL}/activities`,{
+    method: 'POST',
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name:name,
+      description: description
+    })
+  })
+  const result = await response.json()
+   return result
+}
+
+
+
+
+

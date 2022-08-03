@@ -15,7 +15,7 @@ const Register = (props) => {
     try {
       if(username || password !== '', password.length > 7) {
         event.preventDefault();
-        alert(`Thanks for signing up${usernameRef.current.value}!`);
+        alert(`Thanks for signing up ${usernameRef.current.value}!`);
       const token = await registerUser(username, password);
       localStorage.setItem("token", token);
       navigate("/routines");

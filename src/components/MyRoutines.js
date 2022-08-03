@@ -4,43 +4,54 @@ import { ValidUser, getUserRoutines, addRoutine } from "../api";
 
 
 const MyRoutines = (props) => {
-  let token = "";
-  const [myInfo, setMyInfo] = useState({});
-  const [refresh, setRefresh] = useState(false)
-console.log(refresh)
+  const [myInfo, setMyInfo] = useState([]);
+
+  const token = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const name = event.target[0].value;
     const goal = event.target[1].value;
 
-    addRoutine(name, goal,token);
+    const exists = myInfo.find(function(info, index) {
+   
+       if(info.name === name) {
+         console.log("DUPLICATE FOUND!!!!!!!!!!!!!")
+        return true;
+       }else{ 
+        console.log("NO DUPLICATE FOUND!!!!!!!!!!!!")
+        return false}
+         
+       });
+    if( event.target[0].value === '' || event.target[1].value === '') {
+      alert("Name or Goal can not be left blank.")
+    }else if (exists){
+      alert(`Routine name already exists, Try ${event.target[0].value}` + 1)
+      event.target[0].value += '1'
+    }
+    else{const added = await addRoutine(name, goal,token)
+      event.target[0].value = ''
+      event.target[1].value = ''
+      if(added){
+      setMyInfo([...myInfo,added ])
+    }} 
   };
-
+  
   useEffect(() => {
-    token = localStorage.getItem("token");
     async function getMyInfo() {
       const myReturnedInfo = await ValidUser(token);
       const data = await getUserRoutines(token, myReturnedInfo.username);
       setMyInfo(data);
     }
     getMyInfo();
-  }, [refresh]);
+  }, []);
 
-  const handleClick = event => {
-    refresh ? setRefresh(false): setRefresh(true);
-  };
+  const reverseList = myInfo.slice(0).reverse()
 
-  const routines = myInfo.length ? (
+  
+
+  const routines = myInfo[0] ? (
     <div className="boxAll">
-      {myInfo.map((element, index) => {
-        return (
-          <div className="box" key={index}>
-            <h2 className="routineTitle">{element.name}</h2>
-            <p className="routineUsername">{element.goal}</p>
-          </div>
-        );
-      })}
       <h1>Add A Routine</h1>
       <form onSubmit={handleSubmit}>
         <label className="my_routine">
@@ -53,8 +64,16 @@ console.log(refresh)
           <input placeholder="enter Routine Goal" id="goal" />
         </label>
         
-        <button type="submit" onClick={handleClick}>Add Routine</button>
+        <button type="submit">Add Routine</button>
       </form>
+      {reverseList.map((element, index) => {
+        return (
+          <div className="box" key={index}>
+            <h2 className="routineTitle">{element.name}</h2>
+            <p className="routineUsername">{element.goal}</p>
+          </div>
+        );
+      })}
       <button
         onClick={() => {
           window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
