@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from "react";
 
-import { Link } from "react-router-dom";
-import { ValidUser, getUserRoutines, addRoutine,patchRoutines } from "../api";
+import { useNavigate,Link } from "react-router-dom";
+import { ValidUser, getUserRoutines, addRoutine, patchRoutines } from "../api";
 
-
-const MyRoutines = (props) => {
+const MyRoutines = () => {
   const [myInfo, setMyInfo] = useState([]);
-const [checked, setChecked] = useState(false)
+  const [checked, setChecked] = useState(false);
   const token = localStorage.getItem("token");
-
+  
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const name = event.target[0].value;
     const goal = event.target[1].value;
 
-    const isPublic = checked
-    console.log(checked, 'this is cheked')
-    const exists = myInfo.find(function(info, index) {
-   
-       if(info.name === name) {
-         console.log("DUPLICATE FOUND!!!!!!!!!!!!!")
+    const isPublic = checked;
+    console.log(checked, "this is cheked");
+    const exists = myInfo.find(function (info, index) {
+      if (info.name === name) {
+        console.log("DUPLICATE FOUND!!!!!!!!!!!!!");
 
         return true;
       } else {
@@ -33,51 +32,38 @@ const [checked, setChecked] = useState(false)
       alert(`Routine name already exists, Try ${event.target[0].value}` + 1);
       event.target[0].value += "1";
     } else {
-      const added = await addRoutine(name, goal, token);
+      const added = await addRoutine(name, goal, isPublic, token);
       event.target[0].value = "";
       event.target[1].value = "";
+
       if (added) {
         setMyInfo([...myInfo, added]);
       }
     }
-
-    else{const added = await addRoutine(name, goal,isPublic, token)
-      console.log('added to routines list')
-      event.target[0].value = ''
-      event.target[1].value = ''
-      
-      if(added){
-      setMyInfo([...myInfo,added ])
-    }} 
   };
-  
+
   const handleChange = () => {
     setChecked(!checked);
-    console.log(checked)
-  }
+  };
 
+// Trying to pull out a single post, the console.log is logging the id of the post at least!!!!
   const handleEdit = (event) => {
-    console.log(event, 'i happened')
-    // const routineId = element.id
-    // <Route path="/EditRoutine" element={<EditRoutine  />} />
-    <EditRoutine  />
-  }
-
-
+    navigate("/EditRoutine")
+    const id = event.target.value
+    console.log(id)
+  };
+  
   useEffect(() => {
     async function getMyInfo() {
       const myReturnedInfo = await ValidUser(token);
       const data = await getUserRoutines(token, myReturnedInfo.username);
-
       setMyInfo(data);
     }
     getMyInfo();
   }, []);
 
-
-
+  const reverseList = myInfo.slice(0).reverse();
   const routines = token ? (
-
     <div className="boxAll">
       <h1>Add A Routine</h1>
       <form onSubmit={handleSubmit}>
@@ -92,40 +78,40 @@ const [checked, setChecked] = useState(false)
         </label>
 
         <fieldset>
-          <legend>
-            Set Visibility::
-          </legend>
+          <legend>Set Visibility::</legend>
           <label>
-          <input 
-          type = 'checkbox' 
-          checked={checked===true} 
-          onChange={handleChange} 
-          id='isPublic'/>
-          Check to Make Public</label>
+            <input
+              type="checkbox"
+              checked={checked === true}
+              onChange={handleChange}
+              id="isPublic"
+            />
+            Check to Make Public
+          </label>
         </fieldset>
-        
 
         <button type="submit">Add Routine</button>
       </form>
+      
       {!reverseList[0] ? (
         <div>You have no routines!</div>
-      ) : (reverseList.map((element, index) => {
-        console.log(reverseList)
-        return (
-          <div className="box" key={index}>
-            <h2 className="routineTitle">{element.name}</h2>
-            <p className="routineUsername">{element.goal}</p>
+      ) : (
+        reverseList.map((element, index) => {
+          return (
+            <div className="box" key={index}>
+              <h2 className="routineTitle">{element.name}</h2>
+              <p className="routineUsername">{element.goal}</p>
 
-            <button
-            id='editRoutine'
-            type= 'button'
-            value = {element.id}
-            onClick={handleEdit}>
-            <Link to = '/EditRoutine'>Edit</Link></button>
-
-          </div>
-        );
-      }))}
+              <button
+                id="editRoutine"
+                type="button"
+                value={element.id}
+                onClick={handleEdit}
+              >Edit</button>
+            </div>
+          );
+        })
+      )}
       <button
         onClick={() => {
           window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -158,5 +144,3 @@ const [checked, setChecked] = useState(false)
 };
 
 export default MyRoutines;
-
-
