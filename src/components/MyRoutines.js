@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {Link} from "react-router-dom";
+import {Link, Route } from "react-router-dom";
 import { ValidUser, getUserRoutines, addRoutine } from "../api";
-
 
 const MyRoutines = (props) => {
   const [myInfo, setMyInfo] = useState([]);
-
+const [checked, setChecked] = useState(false)
   const token = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const name = event.target[0].value;
     const goal = event.target[1].value;
-
+    const isPublic = checked
+    console.log(checked, 'this is cheked')
     const exists = myInfo.find(function(info, index) {
    
        if(info.name === name) {
@@ -29,18 +29,26 @@ const MyRoutines = (props) => {
       alert(`Routine name already exists, Try ${event.target[0].value}` + 1)
       event.target[0].value += '1'
     }
-    else{const added = await addRoutine(name, goal,token)
+    else{const added = await addRoutine(name, goal,isPublic, token)
       console.log('added to routines list')
       event.target[0].value = ''
       event.target[1].value = ''
+      
       if(added){
       setMyInfo([...myInfo,added ])
     }} 
   };
   
-  const handleEditSubmit = async(event) => {
-    event.preventDefault();
-    
+  const handleChange = () => {
+    setChecked(!checked);
+    console.log(checked)
+  }
+
+  const handleEdit = (event) => {
+    console.log(event, 'im happened')
+    // const routineId = element.id
+    // <Route path="/EditRoutine" element={<EditRoutine  />} />
+    // <EditRoutine  />
   }
 
   useEffect(() => {
@@ -67,16 +75,36 @@ const MyRoutines = (props) => {
           Goal:
           <input placeholder="Enter Routine Goal" id="goal" />
         </label>
+
+        <fieldset>
+          <legend>
+            Set Visibility::
+          </legend>
+          <label>
+          <input 
+          type = 'checkbox' 
+          checked={checked===true} 
+          onChange={handleChange} 
+          id='isPublic'/>
+          Check to Make Public</label>
+        </fieldset>
         
         <button type="submit">Add Routine</button>
       </form>
       {!reverseList[0] ? (
         <div>You have no routines!</div>
       ) : (reverseList.map((element, index) => {
+        console.log(reverseList)
         return (
           <div className="box" key={index}>
             <h2 className="routineTitle">{element.name}</h2>
             <p className="routineUsername">{element.goal}</p>
+            <button
+            id='editRoutine'
+            type= 'button'
+            value = {element.id}
+            onClick={handleEdit}>
+            <Link to = '/EditRoutine'>Edit</Link></button>
           </div>
         );
       }))}

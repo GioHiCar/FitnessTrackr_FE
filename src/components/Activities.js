@@ -6,7 +6,6 @@ import {Link} from "react-router-dom";
 const Activities = () => {
     const [allActivities, setAllActivities] = useState([]);
 
-
     const token = localStorage.getItem("token");
    
   const handleSubmit = async (event) => {
