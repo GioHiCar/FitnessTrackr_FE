@@ -35,8 +35,6 @@ const Routines = () => {
               <div className="box" key={index}>
                 <h2 className="routineTitle">{element.name}</h2>
                 <p className="routineUsername">{element.goal}</p>
-                {/* {element.creatorId === username ? 
-                (<button onClick={editRoutine}>Edit</button>) : (null) } */}
               </div>
             );
           })}
