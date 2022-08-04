@@ -73,7 +73,7 @@ export const userLogin = async (username, password) => {
 
 
 
-export const addRoutine = async (name, goal,token, isPublic) => {
+export const addRoutine = async (name, goal, isPublic, token) => {
   const response = await fetch(`${BASE_URL}/routines`,{
     method: 'POST',
     headers: {
@@ -83,7 +83,7 @@ export const addRoutine = async (name, goal,token, isPublic) => {
     body: JSON.stringify({
       name:name,
       goal: goal,
-      isPublic:isPublic
+      isPublic: isPublic
     })
   })
   const result = await response.json()
@@ -104,7 +104,7 @@ export const addActivity = async (name, description,token) => {
       'Authorization' : `Bearer ${token}`,
     },
     body: JSON.stringify({
-      name:name,
+      name: name,
       description: description
     })
   })
@@ -122,6 +122,7 @@ export const patchRoutines = async (name, goal, token) => {
   body: JSON.stringify({
     name: name,
     goal: goal,
+    isPublic: isPublic
   })
 })
   const result = await response.json()

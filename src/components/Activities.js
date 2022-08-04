@@ -6,7 +6,6 @@ import {Link} from "react-router-dom";
 const Activities = () => {
     const [allActivities, setAllActivities] = useState([]);
 
-
     const token = localStorage.getItem("token");
    
   const handleSubmit = async (event) => {
@@ -20,7 +19,6 @@ const Activities = () => {
         console.log("DUPLICATE FOUND!!!!!!!!!!!!!")
        return true;
       }else{ 
-       console.log("NO DUPLICATE FOUND!!!!!!!!!!!!")
        return false}
         
       });

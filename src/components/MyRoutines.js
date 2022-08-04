@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+
 import { Link } from "react-router-dom";
 import { ValidUser, getUserRoutines, addRoutine,patchRoutines } from "../api";
 
+
 const MyRoutines = (props) => {
   const [myInfo, setMyInfo] = useState([]);
-
+const [checked, setChecked] = useState(false)
   const token = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
@@ -12,9 +14,13 @@ const MyRoutines = (props) => {
     const name = event.target[0].value;
     const goal = event.target[1].value;
 
-    const exists = myInfo.find(function (info, index) {
-      if (info.name === name) {
-        console.log("DUPLICATE FOUND!!!!!!!!!!!!!");
+    const isPublic = checked
+    console.log(checked, 'this is cheked')
+    const exists = myInfo.find(function(info, index) {
+   
+       if(info.name === name) {
+         console.log("DUPLICATE FOUND!!!!!!!!!!!!!")
+
         return true;
       } else {
         console.log("NO DUPLICATE FOUND!!!!!!!!!!!!");
@@ -34,7 +40,29 @@ const MyRoutines = (props) => {
         setMyInfo([...myInfo, added]);
       }
     }
+
+    else{const added = await addRoutine(name, goal,isPublic, token)
+      console.log('added to routines list')
+      event.target[0].value = ''
+      event.target[1].value = ''
+      
+      if(added){
+      setMyInfo([...myInfo,added ])
+    }} 
   };
+  
+  const handleChange = () => {
+    setChecked(!checked);
+    console.log(checked)
+  }
+
+  const handleEdit = (event) => {
+    console.log(event, 'i happened')
+    // const routineId = element.id
+    // <Route path="/EditRoutine" element={<EditRoutine  />} />
+    <EditRoutine  />
+  }
+
 
   useEffect(() => {
     async function getMyInfo() {
@@ -47,40 +75,57 @@ const MyRoutines = (props) => {
   }, []);
 
 
-  
-  
-  
-  
-  
-  
-  
-  const reverseList = myInfo.slice(0).reverse();
-  const routines = myInfo[0] ? (
+
+  const routines = token ? (
+
     <div className="boxAll">
       <h1>Add A Routine</h1>
       <form onSubmit={handleSubmit}>
         <label className="my_routine">
           Name:
-          <input placeholder="enter Routine Name" id="name" />
+          <input placeholder="Enter Routine Name" id="name" />
         </label>
 
         <label className="my_routine">
           Goal:
-          <input placeholder="enter Routine Goal" id="goal" />
+          <input placeholder="Enter Routine Goal" id="goal" />
         </label>
+
+        <fieldset>
+          <legend>
+            Set Visibility::
+          </legend>
+          <label>
+          <input 
+          type = 'checkbox' 
+          checked={checked===true} 
+          onChange={handleChange} 
+          id='isPublic'/>
+          Check to Make Public</label>
+        </fieldset>
+        
+
         <button type="submit">Add Routine</button>
       </form>
-      {reverseList.map((element, index) => {
+      {!reverseList[0] ? (
+        <div>You have no routines!</div>
+      ) : (reverseList.map((element, index) => {
+        console.log(reverseList)
         return (
           <div className="box" key={index}>
             <h2 className="routineTitle">{element.name}</h2>
             <p className="routineUsername">{element.goal}</p>
-            <p className="routineUsername">{element.creatorId}</p>
-            <button value="Edit" >Edit</button>
-            <button value="Delete" >Delete</button>
+
+            <button
+            id='editRoutine'
+            type= 'button'
+            value = {element.id}
+            onClick={handleEdit}>
+            <Link to = '/EditRoutine'>Edit</Link></button>
+
           </div>
         );
-      })}
+      }))}
       <button
         onClick={() => {
           window.scrollTo({ top: 0, left: 0, behavior: "smooth" });

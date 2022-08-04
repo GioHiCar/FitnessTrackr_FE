@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Test, Navbar, Activities, MyRoutines, Routines, Home, Register } from './';
+import { Test, Navbar, Activities, MyRoutines, Routines, Home, Register, EditRoutine } from './';
 import { Routes, Route } from "react-router-dom";
 
 
@@ -16,6 +16,7 @@ return(
       <Route path="/activities" element={<Activities />} />
       <Route path="/users/:username/routines" element={<MyRoutines />} />
       <Route path="/register" element={<Register token={token} setToken={setToken} />}/>
+      <Route path="/EditRoutine" element={<EditRoutine  />} />
     </Routes>
 </div>
 )}
