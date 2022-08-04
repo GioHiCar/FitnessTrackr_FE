@@ -30,6 +30,7 @@ const MyRoutines = (props) => {
       event.target[0].value += '1'
     }
     else{const added = await addRoutine(name, goal,token)
+      console.log('added to routines list')
       event.target[0].value = ''
       event.target[1].value = ''
       if(added){
@@ -37,6 +38,11 @@ const MyRoutines = (props) => {
     }} 
   };
   
+  const handleEditSubmit = async(event) => {
+    event.preventDefault();
+    
+  }
+
   useEffect(() => {
     async function getMyInfo() {
       const myReturnedInfo = await ValidUser(token);
@@ -48,32 +54,32 @@ const MyRoutines = (props) => {
 
   const reverseList = myInfo.slice(0).reverse()
 
-  
-
-  const routines = myInfo[0] ? (
+  const routines = token ? (
     <div className="boxAll">
       <h1>Add A Routine</h1>
       <form onSubmit={handleSubmit}>
         <label className="my_routine">
           Name:
-          <input placeholder="enter Routine Name" id="name" />
+          <input placeholder="Enter Routine Name" id="name" />
         </label>
 
         <label className="my_routine">
           Goal:
-          <input placeholder="enter Routine Goal" id="goal" />
+          <input placeholder="Enter Routine Goal" id="goal" />
         </label>
         
         <button type="submit">Add Routine</button>
       </form>
-      {reverseList.map((element, index) => {
+      {!reverseList[0] ? (
+        <div>You have no routines!</div>
+      ) : (reverseList.map((element, index) => {
         return (
           <div className="box" key={index}>
             <h2 className="routineTitle">{element.name}</h2>
             <p className="routineUsername">{element.goal}</p>
           </div>
         );
-      })}
+      }))}
       <button
         onClick={() => {
           window.scrollTo({top: 0, left: 0, behavior: 'smooth'});

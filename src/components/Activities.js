@@ -20,7 +20,6 @@ const Activities = () => {
         console.log("DUPLICATE FOUND!!!!!!!!!!!!!")
        return true;
       }else{ 
-       console.log("NO DUPLICATE FOUND!!!!!!!!!!!!")
        return false}
         
       });

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getAllRoutines } from "../api";
+import { getAllRoutines, ValidUser } from "../api";
 
 const Routines = () => {
     const [allRoutines, setAllRoutines] = useState([]);
+    const [username, setUsername] = useState('')
+
 
     const handleMessage = (event) => {
         event.preventDefault();
@@ -10,6 +12,9 @@ const Routines = () => {
 
       useEffect(() => {
         async function fetchRoutines() {
+          const token = localStorage.getItem("token");
+          const myReturnedInfo = await ValidUser(token);
+          setUsername(myReturnedInfo.username)
           if (!allRoutines.length) {
             const retrievedRoutines = await getAllRoutines();
             setAllRoutines(retrievedRoutines);
@@ -23,10 +28,13 @@ const Routines = () => {
       const displayRoutines = allRoutines.length ? (
         <div className="boxAll">
           {allRoutines.map((element, index) => {
+            console.log(element)
             return (
               <div className="box" key={index}>
                 <h2 className="routineTitle">{element.name}</h2>
                 <p className="routineUsername">{element.goal}</p>
+                {element.creatorName === username ? 
+                (<button onClick={editRoutine}>Edit</button>) : (null) }
               </div>
             );
           })}

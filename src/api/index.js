@@ -121,6 +121,7 @@ export const patchRoutines = async (name, goal, isPublic, token) => {
   body: JSON.stringify({
     name: name,
     goal: goal,
+    isPublic: isPublic
   })
 })
   const result = await response.json()
