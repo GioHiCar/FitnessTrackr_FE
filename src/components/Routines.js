@@ -20,9 +20,11 @@ const Routines = () => {
         fetchRoutines();
       }, []);
 
+      const reverseList = allRoutines.slice(0).reverse();
+
       const displayRoutines = allRoutines.length ? (
         <div className="boxAll">
-          {allRoutines.map((element, index) => {
+          {reverseList.map((element, index) => {
             return (
               <div className="box" key={index}>
                 <h2 className="routineTitle">{element.name}</h2>

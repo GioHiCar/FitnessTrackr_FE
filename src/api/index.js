@@ -51,7 +51,7 @@ export const userLogin = async (username, password) => {
   export const ValidUser = async (token) => {
    const response = await fetch (`${BASE_URL}/users/me`, {
      headers: {
-      'Content-Type' : "application/json",
+      'Content-Type' : 'application/json',
       'Authorization' : `Bearer ${token}`,
      },
    })
@@ -67,6 +67,7 @@ export const userLogin = async (username, password) => {
     },
   })
   const result = await response.json()
+
   return result
 }
 
@@ -111,7 +112,7 @@ export const addActivity = async (name, description,token) => {
    return result
 }
 
-export const patchRoutines = async (name, goal, isPublic, token) => {
+export const patchRoutines = async (name, goal, token) => {
   const response = await fetch(`${BASE_URL}/routines/:routineId`, {
     method: "PATCH",
     headers: {
@@ -126,6 +127,7 @@ export const patchRoutines = async (name, goal, isPublic, token) => {
   const result = await response.json()
   return result
 }
+
 
 
 
