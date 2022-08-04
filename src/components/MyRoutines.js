@@ -45,10 +45,10 @@ const [checked, setChecked] = useState(false)
   }
 
   const handleEdit = (event) => {
-    console.log(event, 'im happened')
+    console.log(event, 'i happened')
     // const routineId = element.id
     // <Route path="/EditRoutine" element={<EditRoutine  />} />
-    // <EditRoutine  />
+    <EditRoutine  />
   }
 
   useEffect(() => {
