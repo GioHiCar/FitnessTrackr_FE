@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useNavigate,Link } from "react-router-dom";
 import { ValidUser, getUserRoutines, addRoutine, patchRoutines } from "../api";
+import EditRoutine from "./EditRoutine";
 
 const MyRoutines = () => {
   const [myInfo, setMyInfo] = useState([]);
@@ -61,6 +62,8 @@ const MyRoutines = () => {
     }
     getMyInfo();
   }, []);
+
+const routine = <MyRoutines value="Hello!" />
 
   const reverseList = myInfo.slice(0).reverse();
   const routines = token ? (

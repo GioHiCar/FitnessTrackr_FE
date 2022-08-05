@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react'
 import { ValidUser, getUserRoutines, addRoutine,patchRoutines } from "../api";
 import { useNavigate } from "react-router-dom";
 
-const EditRoutine = () => {
+const EditRoutine = (props) => {
     const [checked, setChecked] = useState(false)
     const [myInfo, setMyInfo] = useState([]);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
+    console.log(props.value)
     const handleSubmit = async (event) => {
         event.preventDefault();
         const name = event.target[0].value;
         const goal = event.target[1].value;
         const isPublic = checked
         const exists = myInfo.find(function(info, index) {
-       
            if(info.name === name) {
              console.log("DUPLICATE FOUND!!!!!!!!!!!!!")
     
@@ -49,6 +49,7 @@ setChecked(!checked);
 const handleClick = () => {
   navigate('/users/:username/routines')
 }
+
 
 useEffect(() => {
     async function getMyInfo() {
