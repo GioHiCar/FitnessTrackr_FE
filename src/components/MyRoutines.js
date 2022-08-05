@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-
 import { useNavigate,Link } from "react-router-dom";
-import { ValidUser, getUserRoutines, addRoutine, patchRoutines } from "../api";
-import EditRoutine from "./EditRoutine";
+import { ValidUser, getUserRoutines, addRoutine} from "../api";
+
 
 const MyRoutines = () => {
   const [myInfo, setMyInfo] = useState([]);
   const [checked, setChecked] = useState(false);
   const token = localStorage.getItem("token");
-  
   const navigate = useNavigate();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const name = event.target[0].value;
@@ -17,7 +16,7 @@ const MyRoutines = () => {
 
     const isPublic = checked;
     console.log(checked, "this is cheked");
-    const exists = myInfo.find(function (info, index) {
+    const exists = myInfo.find(function (info) {
       if (info.name === name) {
         console.log("DUPLICATE FOUND!!!!!!!!!!!!!");
 
@@ -47,12 +46,18 @@ const MyRoutines = () => {
     setChecked(!checked);
   };
 
-// Trying to pull out a single post, the console.log is logging the id of the post at least!!!!
+
   const handleEdit = (event) => {
-    navigate("/EditRoutine")
-    const id = event.target.value
-    console.log(id)
+    const routineId = event.target.value
+    navigate("/EditRoutine", {state:{routineId}})
   };
+
+  const handleDelete = async (event) => {
+    const routineId = event.target.value
+    const deleted = await deleteRoutines(token,routineId)
+    console.log(deleted,"deleted")
+    return deleted
+  }
   
   useEffect(() => {
     async function getMyInfo() {
@@ -61,11 +66,11 @@ const MyRoutines = () => {
       setMyInfo(data);
     }
     getMyInfo();
-  }, []);
+  }, [handleDelete]);
 
-const routine = <MyRoutines value="Hello!" />
 
   const reverseList = myInfo.slice(0).reverse();
+
   const routines = token ? (
     <div className="boxAll">
       <h1>Add A Routine</h1>
@@ -111,6 +116,12 @@ const routine = <MyRoutines value="Hello!" />
                 value={element.id}
                 onClick={handleEdit}
               >Edit</button>
+              <button
+                id="deleteRoutine"
+                type="button"
+                value={element.id}
+                onClick={handleDelete}
+              >Delete</button>
             </div>
           );
         })
@@ -143,7 +154,13 @@ const routine = <MyRoutines value="Hello!" />
     </div>
   );
 
-  return <div className="box">{routines}</div>;
+  return (
+
+<div className="box">{routines}</div>
+  )
+     
+  
+ 
 };
 
 export default MyRoutines;

@@ -129,6 +129,37 @@ export const patchRoutines = async (name, goal, token) => {
   return result
 }
 
+export const AddToRoutine  = async (activityId,count,duration,token,routineId ) => {
+  const response = await fetch(`${BASE_URL}routines/${routineId}/activities`, {
+    method: "POST",
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      activityId:activityId ,
+      count: count, 
+      duration: duration
+    })
+})
+  const result = await response.json()
+  return result
+}
+
+
+export const deleteRoutines = async (token,routineActivityId)=> {
+  const response = await fetch(`${BASE_URL}routine_activities/${routineActivityId}`, {
+    method: "DELETE",
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    }
+})
+  const result = await response.json()
+  return result
+  
+}
+
 
 
 

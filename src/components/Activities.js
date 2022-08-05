@@ -47,6 +47,12 @@ const Activities = () => {
     
         fetchActivities();
       }, []);
+      const handleDelete = async (event) => {
+        const activityId = event.target.value
+        const deleted = await deleteActivities(token,activityId)
+        console.log(deleted,"deleted")
+        return deleted
+      }
 
       const reverseList = allActivities.slice(0).reverse()
 
@@ -71,7 +77,19 @@ const Activities = () => {
               <div className="box" key={index}>
                 <h2 className="activityTitle">{element.name}</h2>
                 <p className="activityDescription">{element.description}</p>
-              </div>
+              <button
+                id="editRoutine"
+                type="button"
+                value={element.id}
+                // onClick={handleEdit}
+              >Edit</button>
+              <button
+                id="deleteRoutine"
+                type="button"
+                value={element.id}
+                onClick={handleDelete}
+              >Delete</button>
+            </div>
             );
           })}
 
