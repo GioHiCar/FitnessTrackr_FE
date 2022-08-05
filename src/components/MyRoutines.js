@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate,Link } from "react-router-dom";
-import { ValidUser, getUserRoutines, addRoutine} from "../api";
+import { ValidUser, getUserRoutines, addRoutine, deleteRoutines} from "../api";
 
 
 const MyRoutines = () => {
