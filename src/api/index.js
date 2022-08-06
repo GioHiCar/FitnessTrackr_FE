@@ -149,7 +149,7 @@ export const AddToRoutine  = async (activityId,count,duration,token,routineId ) 
 
 export const deleteRoutines = async (token,routineActivityId)=> {
   console.log(token,routineActivityId, 'this is token')
-  const response = await fetch(`${BASE_URL}routine_activities/${routineActivityId}`, {
+  const response = await fetch(`${BASE_URL}/routine_activities/${routineActivityId}`, {
     method: "DELETE",
     headers: {
       'Content-Type' : 'application/json',
