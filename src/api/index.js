@@ -162,8 +162,8 @@ export const deleteRoutines = async (token,routineId)=> {
 }
 
 
-export const patchActivities = async (name, description,activityId,token) => {
-  const response = await fetch(`${BASE_URL}activities/${activityId}`, {
+export const patchActivities = async (name, description, activityId,token) => {
+  const response = await fetch(`${BASE_URL}/activities/${activityId}`, {
     method: "PATCH",
     headers: {
       'Content-Type' : 'application/json',

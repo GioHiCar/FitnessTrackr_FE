@@ -5,10 +5,9 @@ import { useNavigate,Link } from "react-router-dom";
 
 const Activities = ({allActivities}) => {
 
-
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
-  const handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
       event.preventDefault();
     const name = event.target[0].value;
     const description = event.target[1].value;
@@ -33,18 +32,16 @@ const Activities = ({allActivities}) => {
         event.target[0].value = ''
         event.target[1].value = ''
    
-   if(added) {
-    setAllActivities([...allActivities,added])
-   }}
+  }
   };
 
   const handleEdit = (event) => {
-    const ActivityId = event.target.value
-    navigate("/EditActivities", {state:{ActivityId}})
+    const activityId = event.target.value
+    navigate("/EditActivities", {state:{activityId}})
   };
 
       const reverseList = allActivities.slice(0).reverse()
-
+      console.log(allActivities)
       const displayActivities = token ? (
           <div className="boxAll">
                   <h1>Add An Activity</h1>

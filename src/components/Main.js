@@ -24,7 +24,7 @@ return(
     </div>
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/routines" element={<Routines />} />
+      <Route path="/routines" element={<Routines allActivities={allActivities} />} />
       <Route path="/activities" element={<Activities allActivities={allActivities} />} />
       <Route path="/users/:username/routines" element={<MyRoutines  />} />
       <Route path="/register" element={<Register token={token} setToken={setToken} />}/>

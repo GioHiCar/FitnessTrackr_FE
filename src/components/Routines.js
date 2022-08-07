@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getAllRoutines, ValidUser } from "../api";
 
-const Routines = () => {
+const Routines = ({allActivities}) => {
     const [allRoutines, setAllRoutines] = useState([]);
-    // const [id, setId] = useState('')
-
-
-    const handleMessage = (event) => {
-        event.preventDefault();
-      };
-
+console.log(allRoutines)
       useEffect(() => {
         async function fetchRoutines() {
           // const token = localStorage.getItem("token");
@@ -27,17 +21,22 @@ const Routines = () => {
       }, []);
 
       const reverseList = allRoutines.slice(0).reverse();
-
+      
       const displayRoutines = allRoutines.length ? (
         <div className="boxAll">
           {reverseList.map((element, index) => {
+              
             return (
               <div className="box" key={index}>
+                <h1 className="routinesUsername">{element.creatorName}</h1>
                 <h2 className="routineTitle">{element.name}</h2>
                 <p className="routineUsername">{element.goal}</p>
+                {element.activities.map((activity, index) => (
+                  <div key={index}>{activity.name}</div>
+                ))}
               </div>
-            );
-          })}
+            );}
+          )}
         </div>
       ) : (
         <div>Loading Routines...</div>
