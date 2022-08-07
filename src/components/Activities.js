@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import {getAllActivities, addActivity} from '../api'
-import {Link} from "react-router-dom";
+import { addActivity} from '../api'
+import { useNavigate,Link } from "react-router-dom";
 
 
-const Activities = () => {
-    const [allActivities, setAllActivities] = useState([]);
+const Activities = ({allActivities}) => {
+
 
     const token = localStorage.getItem("token");
-   
+    const navigate = useNavigate();
   const handleSubmit = async (event) => {
       event.preventDefault();
     const name = event.target[0].value;
@@ -38,21 +38,10 @@ const Activities = () => {
    }}
   };
 
-      useEffect(() => {
-        
-        async function fetchActivities() {
-            const retrievedActivities = await getAllActivities();
-            setAllActivities(retrievedActivities);
-        }
-    
-        fetchActivities();
-      }, []);
-      const handleDelete = async (event) => {
-        const activityId = event.target.value
-        const deleted = await deleteActivities(token,activityId)
-        console.log(deleted,"deleted")
-        return deleted
-      }
+  const handleEdit = (event) => {
+    const ActivityId = event.target.value
+    navigate("/EditActivities", {state:{ActivityId}})
+  };
 
       const reverseList = allActivities.slice(0).reverse()
 
@@ -67,7 +56,7 @@ const Activities = () => {
 
         <label className="my_activity">
           Goal:
-          <input placeholder="enter Activity Description" id="description" />
+          <input placeholder="enter Activity Goal" id="Goal" />
         </label>
         
         <button type="submit">Add Activity</button>
@@ -81,14 +70,8 @@ const Activities = () => {
                 id="editRoutine"
                 type="button"
                 value={element.id}
-                // onClick={handleEdit}
+                onClick={handleEdit}
               >Edit</button>
-              <button
-                id="deleteRoutine"
-                type="button"
-                value={element.id}
-                onClick={handleDelete}
-              >Delete</button>
             </div>
             );
           })}

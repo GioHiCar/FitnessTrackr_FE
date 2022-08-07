@@ -4,11 +4,10 @@ import { registerUser } from "../api";
 import PasswordCounter from "./PasswordCounter"
 
 
-const Register = (props) => {
+const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
-  const [token, setToken] = [props.token, props.setToken]
   const usernameRef = useRef();
 
   const handleSubmit = async (event) => {
@@ -25,7 +24,6 @@ const Register = (props) => {
      } catch (error) {
       alert(error);
     }
-  
   };
 
   return (

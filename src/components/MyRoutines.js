@@ -6,16 +6,19 @@ import { ValidUser, getUserRoutines, addRoutine, deleteRoutines} from "../api";
 const MyRoutines = () => {
   const [myInfo, setMyInfo] = useState([]);
   const [checked, setChecked] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const name = event.target[0].value;
     const goal = event.target[1].value;
 
+
     const isPublic = checked;
-    console.log(checked, "this is cheked");
     const exists = myInfo.find(function (info) {
       if (info.name === name) {
         console.log("DUPLICATE FOUND!!!!!!!!!!!!!");
@@ -26,21 +29,25 @@ const MyRoutines = () => {
         return false;
       }
     });
-    if (event.target[0].value === "" || event.target[1].value === "") {
-      alert("Name or Goal can not be left blank.");
-    } else if (exists) {
+     if (exists) {
       alert(`Routine name already exists, Try ${event.target[0].value}` + 1);
       event.target[0].value += "1";
     } else {
       const added = await addRoutine(name, goal, isPublic, token);
+
+      
       event.target[0].value = "";
       event.target[1].value = "";
-
+      event.target[2].value = "";
+      event.target[3].value = "";
+      
       if (added) {
         setMyInfo([...myInfo, added]);
+        
       }
     }
   };
+
 
   const handleChange = () => {
     setChecked(!checked);
@@ -53,10 +60,14 @@ const MyRoutines = () => {
   };
 
   const handleDelete = async (event) => {
-    const routineId = event.target.value
+    if(confirm("Are you sure?")){
+      const routineId = event.target.value
     const deleted = await deleteRoutines(token,routineId)
-    console.log(deleted,"deleted")
+    setDeleted(deleted)
     return deleted
+    } else {
+      return null
+    }
   }
   
   useEffect(() => {
@@ -66,10 +77,10 @@ const MyRoutines = () => {
       setMyInfo(data);
     }
     getMyInfo();
-  }, [handleDelete]);
+  }, [deleted]);
 
-
-  const reverseList = myInfo.slice(0).reverse();
+ 
+  
 
   const routines = token ? (
     <div className="boxAll">
@@ -77,13 +88,14 @@ const MyRoutines = () => {
       <form onSubmit={handleSubmit}>
         <label className="my_routine">
           Name:
-          <input placeholder="Enter Routine Name" id="name" />
+          <input required placeholder="Enter Routine Name" id="name" />
         </label>
 
         <label className="my_routine">
           Goal:
-          <input placeholder="Enter Routine Goal" id="goal" />
+          <input required placeholder="Enter Routine Goal" id="goal" />
         </label>
+
 
         <fieldset>
           <legend>Set Visibility::</legend>
@@ -97,19 +109,21 @@ const MyRoutines = () => {
             Check to Make Public
           </label>
         </fieldset>
-
-        <button type="submit">Add Routine</button>
+        <button 
+        type="submit">
+        Add Routine
+        </button>
       </form>
-      
-      {!reverseList[0] ? (
+      {!myInfo[0] ? (
         <div>You have no routines!</div>
       ) : (
-        reverseList.map((element, index) => {
+        myInfo.map((element, index) => {
           return (
             <div className="box" key={index}>
               <h2 className="routineTitle">{element.name}</h2>
               <p className="routineUsername">{element.goal}</p>
-
+              <p className="routineUsername">{element.count}</p>
+              <p className="routineUsername">{element.duration}</p>
               <button
                 id="editRoutine"
                 type="button"
@@ -122,6 +136,11 @@ const MyRoutines = () => {
                 value={element.id}
                 onClick={handleDelete}
               >Delete</button>
+              <button
+                id="deleteRoutine"
+                type="button"
+
+              >Add Activity to Routine</button>
             </div>
           );
         })
