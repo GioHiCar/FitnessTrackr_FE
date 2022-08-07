@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useNavigate,Link } from "react-router-dom";
-import { ValidUser, getUserRoutines, addRoutine, deleteRoutines} from "../api";
+import { ValidUser, getUserRoutines, addRoutine, deleteRoutines,AddToRoutine} from "../api";
 
 
-const MyRoutines = () => {
+const MyRoutines = ({allActivities}) => {
   const [myInfo, setMyInfo] = useState([]);
   const [checked, setChecked] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [activityId, setActivityId] = useState('')
+  const [count, setCount] = useState('')
+  const [duration, setDuration] = useState('')
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+//  console.log("THIS IS ALL ACTIVITIES:",allActivities,"THIS IS MY ROUTINES:",myInfo)
 
-
-
-  const handleSubmit = async (event) => {
+  const handleRoutineSubmit = async (event) => {
     event.preventDefault();
+    console.log("handle routine submit")
     const name = event.target[0].value;
     const goal = event.target[1].value;
 
@@ -42,12 +45,32 @@ const MyRoutines = () => {
       event.target[3].value = "";
       
       if (added) {
-        setMyInfo([...myInfo, added]);
+        setMyInfo([added,...myInfo]);
         
       }
     }
   };
 
+  const handleActivitySubmit = async (event) => {
+    event.preventDefault();
+    const routineId = event.target.value
+    console.log(routineId)
+    // console.log("THIS IS ROUTINE ID:",routineId,"THIS IS ACTIVITY ID",activityId)
+  
+   console.log("this is routine id:",routineId,"this is count:",count,"this is duration:",duration,"this is token:",token,"this is activity id:",activityId)
+      const addedAct = await AddToRoutine(routineId,count,duration,token,activityId)
+      
+      // event.target[0].value = "";
+      // event.target[1].value = "";
+      // event.target[2].value = "";
+      // event.target[3].value = "";
+      
+      if (addedAct) {
+        setMyInfo([...myInfo,addedAct]);
+        
+      }
+    }
+  
 
   const handleChange = () => {
     setChecked(!checked);
@@ -69,23 +92,29 @@ const MyRoutines = () => {
       return null
     }
   }
-  
+
+
+  let handleActivity = (e) => {
+    setActivityId(e.target.value)
+    console.log(activityId)
+
+}
   useEffect(() => {
     async function getMyInfo() {
       const myReturnedInfo = await ValidUser(token);
       const data = await getUserRoutines(token, myReturnedInfo.username);
-      setMyInfo(data);
+      setMyInfo(data.reverse());
     }
     getMyInfo();
   }, [deleted]);
 
- 
+
   
 
   const routines = token ? (
     <div className="boxAll">
       <h1>Add A Routine</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleRoutineSubmit}>
         <label className="my_routine">
           Name:
           <input required placeholder="Enter Routine Name" id="name" />
@@ -117,30 +146,48 @@ const MyRoutines = () => {
       {!myInfo[0] ? (
         <div>You have no routines!</div>
       ) : (
-        myInfo.map((element, index) => {
+        myInfo.map((routine, index) => {
           return (
             <div className="box" key={index}>
-              <h2 className="routineTitle">{element.name}</h2>
-              <p className="routineUsername">{element.goal}</p>
-              <p className="routineUsername">{element.count}</p>
-              <p className="routineUsername">{element.duration}</p>
+              <h2 className="routineTitle">Routine Name:{routine.name}</h2>
+              <p className="routineUsername">Routine Goal:{routine.goal}</p>
+               {routine.activities ? 
+               routine.activities.map((activity, index) => {
+                return (
+                  <Fragment  key={index}>
+                      <h2 className="routineTitle">Activity Name:{activity.name}</h2>
+                      <p className="routineUsername">Activity Description:{activity.description}</p>
+                      <p className="routineUsername">Activity Count:{activity.count}</p>
+                      <p className="routineUsername">Activity Duration:{activity.duration}</p>
+                 </Fragment>
+                )
+               }): <></>
+                
+               }
               <button
                 id="editRoutine"
                 type="button"
-                value={element.id}
+                value={routine.id}
                 onClick={handleEdit}
               >Edit</button>
               <button
                 id="deleteRoutine"
                 type="button"
-                value={element.id}
+                value={routine.id}
                 onClick={handleDelete}
               >Delete</button>
               <button
-                id="deleteRoutine"
-                type="button"
-
+              onClick={handleActivitySubmit}
+              value={routine.id}
+                type="submit"
+                name="routineId"
               >Add Activity to Routine</button>
+              <select onChange={handleActivity} >
+                 <option  name="activityId" defaultValue="Select an Activity">--Select an Activity--</option>
+                 {allActivities.map((activity,index) => <option  key={index} value={activity.id}>{activity.name}</option>)}
+              </select>
+              <input onChange={event => setCount(event.target.value)} name="count" placeholder="Count:" ></input>
+              <input onChange={event => setDuration(event.target.value)} name="duration" placeholder="Duration:" ></input>
             </div>
           );
         })
@@ -180,6 +227,6 @@ const MyRoutines = () => {
      
   
  
-};
+}
 
 export default MyRoutines;

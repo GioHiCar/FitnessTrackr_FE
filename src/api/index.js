@@ -131,6 +131,7 @@ export const patchRoutines = async (name, goal,isPublic, token,routineId) => {
 
 
 export const AddToRoutine  = async (routineId,count,duration,token,activityId) => {
+  console.log("api this is routine id:",routineId," api this is count:",count," api this is duration:",duration,"api this is token:",token," api this is activity id:",activityId)
   const response = await fetch(`${BASE_URL}/routines/${routineId}/activities`, {
     method: "POST",
     headers: {

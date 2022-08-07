@@ -4,7 +4,7 @@ import { useNavigate,Link } from "react-router-dom";
 
 
 const Activities = ({allActivities}) => {
-
+     
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
     const handleSubmit = async (event) => {
@@ -15,7 +15,6 @@ const Activities = ({allActivities}) => {
     const exists = allActivities.find(function(allActivities, index) {
    
       if(allActivities.name === name) {
-        console.log("DUPLICATE FOUND!!!!!!!!!!!!!")
        return true;
       }else{ 
        return false}
@@ -35,13 +34,19 @@ const Activities = ({allActivities}) => {
   }
   };
 
+  useEffect(() => {
+   
+
+    
+  }, []);
+
+
   const handleEdit = (event) => {
     const activityId = event.target.value
     navigate("/EditActivities", {state:{activityId}})
   };
 
       const reverseList = allActivities.slice(0).reverse()
-      console.log(allActivities)
       const displayActivities = token ? (
           <div className="boxAll">
                   <h1>Add An Activity</h1>

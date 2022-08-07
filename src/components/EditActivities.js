@@ -51,7 +51,7 @@ function EditActivities({ allActivities }) {
           defaultValue={singleActivity.description}
           ></input>
         </label>
-      <button type="submit">Update your Routine</button>
+      <button type="submit">Update your Activity</button>
       </form>
     </div>
   );

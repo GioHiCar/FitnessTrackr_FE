@@ -3,7 +3,6 @@ import { getAllRoutines, ValidUser } from "../api";
 
 const Routines = ({allActivities}) => {
     const [allRoutines, setAllRoutines] = useState([]);
-console.log(allRoutines)
       useEffect(() => {
         async function fetchRoutines() {
           // const token = localStorage.getItem("token");
@@ -28,11 +27,21 @@ console.log(allRoutines)
               
             return (
               <div className="box" key={index}>
-                <h1 className="routinesUsername">{element.creatorName}</h1>
-                <h2 className="routineTitle">{element.name}</h2>
-                <p className="routineUsername">{element.goal}</p>
+                <h1 className="routinesUsername">Creator: {element.creatorName}</h1>
+                <h2 className="routineTitle">Routine Title: {element.name}</h2>
+                <p className="routineUsername">Routine Goal: {element.goal}</p>
                 {element.activities.map((activity, index) => (
-                  <div key={index}>{activity.name}</div>
+                  <div key={index}>
+                      <p>
+                          Activity Name: {activity.name}
+                          <br></br>
+                          Activity Description: {activity.description}
+                          <br></br>
+                           Duration: {activity.duration}
+                          <br></br>
+                           Count: {activity.count}
+                      </p>
+                  </div>
                 ))}
               </div>
             );}

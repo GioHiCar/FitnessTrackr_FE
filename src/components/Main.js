@@ -26,7 +26,7 @@ return(
       <Route path="/" element={<Home />} />
       <Route path="/routines" element={<Routines allActivities={allActivities} />} />
       <Route path="/activities" element={<Activities allActivities={allActivities} />} />
-      <Route path="/users/:username/routines" element={<MyRoutines  />} />
+      <Route path="/users/:username/routines" element={<MyRoutines allActivities={allActivities} />} />
       <Route path="/register" element={<Register token={token} setToken={setToken} />}/>
       <Route path="/EditRoutine" element={<EditRoutine  />} />
       <Route path="/EditActivities" element={<EditActivities allActivities={allActivities} />} />
