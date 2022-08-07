@@ -112,8 +112,8 @@ export const addActivity = async (name, description,token) => {
    return result
 }
 
-export const patchRoutines = async (name, goal, token) => {
-  const response = await fetch(`${BASE_URL}/routines/:routineId`, {
+export const patchRoutines = async (name, goal,isPublic, token,routineId) => {
+  const response = await fetch(`${BASE_URL}/routines/${routineId}`, {
     method: "PATCH",
     headers: {
       'Content-Type' : 'application/json',
@@ -129,15 +129,16 @@ export const patchRoutines = async (name, goal, token) => {
   return result
 }
 
-export const AddToRoutine  = async (activityId,count,duration,token,routineId ) => {
-  const response = await fetch(`${BASE_URL}routines/${routineId}/activities`, {
+
+export const AddToRoutine  = async (routineId,count,duration,token,activityId) => {
+  const response = await fetch(`${BASE_URL}/routines/${routineId}/activities`, {
     method: "POST",
     headers: {
       'Content-Type' : 'application/json',
       'Authorization' : `Bearer ${token}`,
     },
     body: JSON.stringify({
-      activityId:activityId ,
+      activityId: activityId,
       count: count, 
       duration: duration
     })
@@ -147,9 +148,8 @@ export const AddToRoutine  = async (activityId,count,duration,token,routineId ) 
 }
 
 
-export const deleteRoutines = async (token,routineActivityId)=> {
-  console.log(token,routineActivityId, 'this is token')
-  const response = await fetch(`${BASE_URL}/routine_activities/${routineActivityId}`, {
+export const deleteRoutines = async (token,routineId)=> {
+  const response = await fetch(`${BASE_URL}/routines/${routineId}`, {
     method: "DELETE",
     headers: {
       'Content-Type' : 'application/json',
@@ -162,5 +162,19 @@ export const deleteRoutines = async (token,routineActivityId)=> {
 }
 
 
-
+export const patchActivities = async (name, description,activityId,token) => {
+  const response = await fetch(`${BASE_URL}activities/${activityId}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    },
+  body: JSON.stringify({
+    name,
+    description
+  })
+})
+  const result = await response.json()
+  return result
+}
 
