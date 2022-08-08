@@ -28,11 +28,11 @@ const Register = () => {
 
   return (
     <div className="box" id="loginBox">
-      <h3>REGISTER</h3>
-      <form onSubmit={handleSubmit}>
-        <label className="username">
-          UserName: 
+      <form className="bg-blue-400 h-screen flex items-center flex-col justify-center " onSubmit={handleSubmit}>
+        <label className="username"> 
+      <h3 className="text-center font-bold ">REGISTER</h3>
           <input
+          className="my-3"
             id="username"
             type="text"
             placeholder="enter a username"
@@ -41,15 +41,15 @@ const Register = () => {
           />
         </label>
         <label className="password" >
-          Password: 
           <input
+          className="my-3"
             type="password"
-            placeholder="enter a password (8 character min)"
+            placeholder="enter a password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </label>
  
-        <button type="submit">Register</button>
+        <button className="text-lg bg-gray-600 rounded-full p-3 px-7 font-bold"  type="submit">Register</button>
       </form>
     </div>
   );

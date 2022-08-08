@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { Test, Navbar, Activities, MyRoutines, Routines, Home, Register, EditRoutine,EditActivities,EditRoutineActivity } from './';
+import {Navbar, Activities, MyRoutines, Routines, Home, Register, EditRoutine,EditActivities,EditRoutineActivity } from './';
 import { Routes, Route } from "react-router-dom";
 import { getAllActivities} from "../api";
 

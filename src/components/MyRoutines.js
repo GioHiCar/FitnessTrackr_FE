@@ -119,24 +119,21 @@ let handleActivityEdit = (e) => {
   
 
   const routines = token ? (
-    <div className="boxAll">
-      <h1>Add A Routine</h1>
-      <form onSubmit={handleRoutineSubmit}>
+    <div className="border-solid border-2 border-teal-900">
+      <h1 className="text-center mt-4 font-bold ">Add A Routine</h1>
+      <form className="text-center flex flex-col " onSubmit={handleRoutineSubmit}>
         <label className="my_routine">
-          Name:
-          <input required placeholder="Enter Routine Name" id="name" />
+          <input className="my-3 rounded" required placeholder="Enter Routine Name" id="name" />
         </label>
-
-        <label className="my_routine">
-          Goal:
-          <input required placeholder="Enter Routine Goal" id="goal" />
+        <label className="my_routine ">
+          <input className="my-3 rounded" required placeholder="Enter Routine Goal" id="goal" />
         </label>
 
 
-        <fieldset>
-          <legend>Set Visibility::</legend>
-          <label>
-            <input
+        <fieldset className="flex text-center flex-col">
+          <legend className="font-bold">Set Visibility::</legend>
+          <label className=" mt-1 mb-4">
+            <input 
               type="checkbox"
               checked={checked === true}
               onChange={handleChange}
@@ -145,7 +142,8 @@ let handleActivityEdit = (e) => {
             Check to Make Public
           </label>
         </fieldset>
-        <button 
+        <button
+        className="text-lg bg-gray-600 p-2 hover:text-white  font-bold mb-5 "
         type="submit">
         Add Routine
         </button>
@@ -155,46 +153,64 @@ let handleActivityEdit = (e) => {
       ) : (
         myInfo.map((routine, index) => {
           return (
-            <div className="box" key={index}>
-              <h2 className="routineTitle">Routine Name:{routine.name}</h2>
-              <p className="routineUsername">Routine Goal:{routine.goal}</p>
+            <div className="border-solid border-2 border-teal-900 mb-4 flex flex-col" key={index}>
+              <h2 className="routineTitle font-bold ">Routine Name:</h2>{routine.name}
+              <h2 className="routineUsername font-bold ">Routine Goal:</h2>{routine.goal}
                {routine.activities ? 
                routine.activities.map((activity, index) => {
                 return (
                   <Fragment  key={index}>
-                      <h2 className="routineTitle">Activity Name:{activity.name}<button value={activity.routineActivityId} data-count={activity.count} data-duration={activity.duration} onClick={handleActivityEdit}>Edit</button><button onClick={handleDeleteActivity} value={activity.routineActivityId}>Delete</button></h2>
-                      <p className="routineUsername">Activity Description:{activity.description}</p>
-                      <p className="routineUsername">Activity Count:{activity.count}</p>
-                      <p className="routineUsername">Activity Duration:{activity.duration}</p>
+                      <h2 className="routineTitle font-bold ">Activity Name:</h2><p>{activity.name}
+                      <button className="ml-4 bg-gray-200 rounded-full p-1 px-7 hover:text-white" value={activity.routineActivityId} 
+                              data-count={activity.count} 
+                              data-duration={activity.duration} 
+                              onClick={handleActivityEdit}>Edit Activity Name</button><button
+                              className="ml-4 bg-gray-200 rounded-full p-1 px-7 hover:text-white" 
+                              onClick={handleDeleteActivity} 
+                              value={activity.routineActivityId}>Delete Activity</button></p>
+                      <p className="routineUsername font-bold">Activity Description:</p>{activity.description}
+                      <p className="routineUsername font-bold">Activity Count:</p>{activity.count}
+                      <p className="routineUsername font-bold">Activity Duration:</p>{activity.duration}
                  </Fragment>
                 )
                }): <></>
                 
                }
-              <button
-                id="editRoutine"
-                type="button"
-                value={routine.id}
-                onClick={handleEdit}
-              >Edit</button>
-              <button
-                id="deleteRoutine"
-                type="button"
-                value={routine.id}
-                onClick={handleDeleteRoutine}
-              >Delete</button>
-              <button
-              onClick={handleActivitySubmit}
-              value={routine.id}
-                type="submit"
-                name="routineId"
-              >Add Activity to Routine</button>
-              <select onChange={handleActivity} >
-                 <option  name="activityId" defaultValue="Select an Activity">--Select an Activity--</option>
+
+              <select className="h-full w-50 mb-3"onChange={handleActivity} >
+                 <option  name="activityId" defaultValue="Select an Activity" >--Select an Activity--</option>
                  {allActivities.map((activity,index) => <option  key={index} value={activity.id}>{activity.name}</option>)}
               </select>
-              <input onChange={event => setCount(event.target.value)} name="count" placeholder="Count:" ></input>
-              <input onChange={event => setDuration(event.target.value)} name="duration" placeholder="Duration:" ></input>
+                  <input className="border-solid border-2 border-teal-900" 
+                         onChange={event => setCount(event.target.value)} 
+                         name="count" 
+                         placeholder="Count:" >
+                  </input>
+                  <input 
+                        className="border-solid border-2 border-teal-900 mt-3" 
+                        onChange={event => setDuration(event.target.value)}
+                        name="duration" 
+                        placeholder="Duration:" >
+                  </input>
+              <button
+                  id="editRoutine"
+                  type="button"
+                  value={routine.id}
+                  onClick={handleEdit}
+              >Edit Routine</button>
+              <button
+                  id="deleteRoutine"
+                  type="button"
+                  value={routine.id}
+                  onClick={handleDeleteRoutine}
+              >Delete Routine</button>
+              <button
+                  onClick={handleActivitySubmit}
+                  value={routine.id}
+                  type="submit"
+                  name="routineId"
+              >Add Activity to Routine</button>
+        
             </div>
           );
         })

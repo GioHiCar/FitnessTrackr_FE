@@ -48,7 +48,7 @@ const Activities = ({allActivities}) => {
 
       const reverseList = allActivities.slice(0).reverse()
       const displayActivities = token ? (
-          <div className="boxAll">
+          <div  className="border-solid border-2 border-teal-900" >
                   <h1>Add An Activity</h1>
       <form onSubmit={handleSubmit}>
         <label className="my_activity">
@@ -66,9 +66,10 @@ const Activities = ({allActivities}) => {
           {reverseList.map((element, index) => {
             return (
               <div className="box" key={index}>
-                <h2 className="activityTitle">{element.name}</h2>
-                <p className="activityDescription">{element.description}</p>
+                <h2 className="font-bold ml-2 underline underline-offset-4">Name:</h2> <p className="ml-2 ">{element.name}</p>
+                <p className="font-bold ml-2 underline underline-offset-4">Description:</p> <p className="ml-2 ">{element.description}</p>
               <button
+               className="ml-3 ml-4 bg-gray-200 rounded-full p-1 px-7 "
                 id="editRoutine"
                 type="button"
                 value={element.id}

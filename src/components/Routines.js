@@ -5,10 +5,6 @@ const Routines = ({allActivities}) => {
     const [allRoutines, setAllRoutines] = useState([]);
       useEffect(() => {
         async function fetchRoutines() {
-          // const token = localStorage.getItem("token");
-          // const myReturnedInfo = await ValidUser(token);
-          // console.log(myReturnedInfo, 'this islogged in users info')
-          // setUsername(myReturnedInfo.id)
           if (!allRoutines.length) {
             const retrievedRoutines = await getAllRoutines();
             setAllRoutines(retrievedRoutines);
@@ -26,21 +22,16 @@ const Routines = ({allActivities}) => {
           {reverseList.map((element, index) => {
               
             return (
-              <div className="box" key={index}>
-                <h1 className="routinesUsername">Creator: {element.creatorName}</h1>
-                <h2 className="routineTitle">Routine Title: {element.name}</h2>
-                <p className="routineUsername">Routine Goal: {element.goal}</p>
+              <div className="border-solid border-2 border-teal-900" key={index}>
+                <h1 className="font-bold ml-2 underline underline-offset-4" >Creator:</h1> <p className="ml-2 " >{element.creatorName}</p>
+                <h2 className="font-bold ml-2 underline underline-offset-4" >Routine Title:</h2> <p className="ml-2"> {element.name}</p>
+                <p className="font-bold ml-2 underline underline-offset-4" >Routine Goal: </p> <p className="ml-2">{element.goal}</p>
                 {element.activities.map((activity, index) => (
                   <div key={index}>
-                      <p>
-                          Activity Name: {activity.name}
-                          <br></br>
-                          Activity Description: {activity.description}
-                          <br></br>
-                           Duration: {activity.duration}
-                          <br></br>
-                           Count: {activity.count}
-                      </p>
+                    <p className="font-bold ml-2 underline underline-offset-4" >Activity Name:</p> <p className="ml-2">{activity.name}</p>
+                    <p className="font-bold ml-2 underline underline-offset-4" > Activity Description:</p> <p className="ml-2">{activity.description}</p>
+                    <p className="font-bold ml-2 underline underline-offset-4" > Duration:</p> <p className="ml-2">{activity.duration}</p>
+                    <p className="font-bold ml-2 underline underline-offset-4" > Count:</p> <p className="ml-2">{activity.count}</p>
                   </div>
                 ))}
               </div>
