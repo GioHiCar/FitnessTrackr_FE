@@ -9,3 +9,4 @@ export { default as Register } from "./Register"
 export {default as counter}  from "./PasswordCounter"
 export { default as EditRoutine} from './EditRoutine'
 export { default as EditActivities} from './EditActivities'
+export {default as EditRoutineActivity} from "./EditRoutineActivity"

@@ -21,7 +21,6 @@ function EditActivities({ allActivities }) {
     let name = event.target.name.value
     let description = event.target.description.value
     const patched = await patchActivities(name, description, activityId, token)
-    console.log(patched)
     if (patched) {
       navigate("/users/:username/routines");
     }
@@ -49,6 +48,22 @@ function EditActivities({ allActivities }) {
           placeholder=""
           name="description"
           defaultValue={singleActivity.description}
+          ></input>
+        </label>
+        <label>
+          Count
+          <input
+          placeholder=""
+          name="count"
+          defaultValue={singleActivity.count}
+          ></input>
+        </label>
+        <label>
+          Duration
+          <input
+          placeholder=""
+          name="duration"
+          defaultValue={singleActivity.duration}
           ></input>
         </label>
       <button type="submit">Update your Activity</button>

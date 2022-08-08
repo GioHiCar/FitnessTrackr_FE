@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { useNavigate,Link } from "react-router-dom";
-import { ValidUser, getUserRoutines, addRoutine, deleteRoutines,AddToRoutine} from "../api";
+import { useNavigate,Link, useLocation } from "react-router-dom";
+import { ValidUser, getUserRoutines, addRoutine, deleteRoutines,AddToRoutine,deleteRoutineActivity} from "../api";
 
 
 const MyRoutines = ({allActivities}) => {
@@ -10,9 +10,10 @@ const MyRoutines = ({allActivities}) => {
   const [activityId, setActivityId] = useState('')
   const [count, setCount] = useState('')
   const [duration, setDuration] = useState('')
+  const [activitySubmit, setActivitysubmit] = useState(false)
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-//  console.log("THIS IS ALL ACTIVITIES:",allActivities,"THIS IS MY ROUTINES:",myInfo)
+
 
   const handleRoutineSubmit = async (event) => {
     event.preventDefault();
@@ -46,7 +47,6 @@ const MyRoutines = ({allActivities}) => {
       
       if (added) {
         setMyInfo([added,...myInfo]);
-        
       }
     }
   };
@@ -54,20 +54,10 @@ const MyRoutines = ({allActivities}) => {
   const handleActivitySubmit = async (event) => {
     event.preventDefault();
     const routineId = event.target.value
-    console.log(routineId)
-    // console.log("THIS IS ROUTINE ID:",routineId,"THIS IS ACTIVITY ID",activityId)
-  
-   console.log("this is routine id:",routineId,"this is count:",count,"this is duration:",duration,"this is token:",token,"this is activity id:",activityId)
-      const addedAct = await AddToRoutine(routineId,count,duration,token,activityId)
-      
-      // event.target[0].value = "";
-      // event.target[1].value = "";
-      // event.target[2].value = "";
-      // event.target[3].value = "";
-      
+     const addedAct = await AddToRoutine(routineId,count,duration,token,activityId)
       if (addedAct) {
         setMyInfo([...myInfo,addedAct]);
-        
+        setActivitysubmit(!activitySubmit)
       }
     }
   
@@ -82,10 +72,21 @@ const MyRoutines = ({allActivities}) => {
     navigate("/EditRoutine", {state:{routineId}})
   };
 
-  const handleDelete = async (event) => {
+  const handleDeleteRoutine = async (event) => {
     if(confirm("Are you sure?")){
       const routineId = event.target.value
     const deleted = await deleteRoutines(token,routineId)
+    setDeleted(deleted)
+    return deleted
+    } else {
+      return null
+    }
+  }
+
+  const handleDeleteActivity = async (event) => {
+    if(confirm("Are you sure?")){
+      const routineActivityId = event.target.value
+    const deleted = await deleteRoutineActivity(routineActivityId,token)
     setDeleted(deleted)
     return deleted
     } else {
@@ -99,6 +100,12 @@ const MyRoutines = ({allActivities}) => {
     console.log(activityId)
 
 }
+let handleActivityEdit = (e) => {
+  const routineActivityId = e.target.value
+  const count =e.target.dataset.count
+  const duration =e.target.dataset.duration
+  navigate("/EditRoutineActivity", {state:{routineActivityId,count,duration}})
+}
   useEffect(() => {
     async function getMyInfo() {
       const myReturnedInfo = await ValidUser(token);
@@ -106,7 +113,7 @@ const MyRoutines = ({allActivities}) => {
       setMyInfo(data.reverse());
     }
     getMyInfo();
-  }, [deleted]);
+  }, [deleted,activitySubmit]);
 
 
   
@@ -155,7 +162,7 @@ const MyRoutines = ({allActivities}) => {
                routine.activities.map((activity, index) => {
                 return (
                   <Fragment  key={index}>
-                      <h2 className="routineTitle">Activity Name:{activity.name}</h2>
+                      <h2 className="routineTitle">Activity Name:{activity.name}<button value={activity.routineActivityId} data-count={activity.count} data-duration={activity.duration} onClick={handleActivityEdit}>Edit</button><button onClick={handleDeleteActivity} value={activity.routineActivityId}>Delete</button></h2>
                       <p className="routineUsername">Activity Description:{activity.description}</p>
                       <p className="routineUsername">Activity Count:{activity.count}</p>
                       <p className="routineUsername">Activity Duration:{activity.duration}</p>
@@ -174,7 +181,7 @@ const MyRoutines = ({allActivities}) => {
                 id="deleteRoutine"
                 type="button"
                 value={routine.id}
-                onClick={handleDelete}
+                onClick={handleDeleteRoutine}
               >Delete</button>
               <button
               onClick={handleActivitySubmit}

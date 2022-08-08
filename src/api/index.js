@@ -179,3 +179,39 @@ export const patchActivities = async (name, description, activityId,token) => {
   return result
 }
 
+export const patchRoutineActivities = async (count,duration,routineActivityId,token) => {
+  const response = await fetch(`${BASE_URL}/routine_activities/${routineActivityId}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    },
+  body: JSON.stringify({
+    count,
+    duration
+  })
+})
+  const result = await response.json()
+  console.log(result,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+  return result
+}
+
+
+export const deleteRoutineActivity = async(routineActivityId,token) => {
+  const response = await fetch(`${BASE_URL}/routine_activities/${routineActivityId}`,{
+
+    method: "DELETE",
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    }
+})
+  const result = await response.json()
+  return result
+  
+
+  }
+
+
+
+

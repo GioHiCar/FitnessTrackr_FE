@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-// import { Logout } from "./";
+
 
 const Navbar = () => {
   return (
@@ -8,7 +8,7 @@ const Navbar = () => {
       <h1 className="nav-title">Fitness Trackr</h1>
       <div className="nav-links">
         <NavLink to="/" className="post-link">
-          Home
+          Sign in/Sign Up
         </NavLink>
         <NavLink to="/routines" className="routines-link">
           Routines
@@ -19,10 +19,6 @@ const Navbar = () => {
         <NavLink to="/activities" className="activities-link">
           Activities
         </NavLink>
-        <NavLink to="/login-and-register" className="login-register-link">
-          Login/Register
-        </NavLink>
-        {/* {localStorage.getItem("token") ? <Logout /> : null} */}
       </div>
     </nav>
   );

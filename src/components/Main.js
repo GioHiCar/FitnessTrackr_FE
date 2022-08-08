@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { Test, Navbar, Activities, MyRoutines, Routines, Home, Register, EditRoutine,EditActivities } from './';
+import { Test, Navbar, Activities, MyRoutines, Routines, Home, Register, EditRoutine,EditActivities,EditRoutineActivity } from './';
 import { Routes, Route } from "react-router-dom";
 import { getAllActivities} from "../api";
 
@@ -30,6 +30,7 @@ return(
       <Route path="/register" element={<Register token={token} setToken={setToken} />}/>
       <Route path="/EditRoutine" element={<EditRoutine  />} />
       <Route path="/EditActivities" element={<EditActivities allActivities={allActivities} />} />
+      <Route path="/EditRoutineActivity" element={<EditRoutineActivity allActivities={allActivities} />} />
     </Routes>
 </div>
 )}
